@@ -1,11 +1,12 @@
-const http = require('http'), fs = require('fs');
+const net = require('net');
 
-http.createServer(
-    (req, res,) => {
-        res.writeHead(200, {
-            'Content-Type':'image/jpeg'
+net.createServer(
+    (socket) => {
+        // 只连接一次
+        // socket.once('data', (data) => {
+        socket.on('data', (data) => {
+            socket.write(data);
         });
-        fs.createReadStream('./assets/images/yonger.jpeg').pipe(res)
     }
 ).listen(3000);
 
