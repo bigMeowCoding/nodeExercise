@@ -1,4 +1,4 @@
-const fs = require('fs'), request = require('request');
+const fs = require('fs'), request = require('request'), htmlParser = require('htmlparser');
 
 const configFileName = './rss_feed.txt';
 
@@ -33,10 +33,34 @@ function downLoadRSSFeed(feedUrl) {
 }
 
 
+function parseRSSFeed(rss) {
+    const handle = new htmlParser.RssHandler();
+    const parser = new htmlParser.Parser(handle);
+    parser.parseComplete(rss);
+
+    if(!handle.dom.length) {
+        return next(new Error('no rss items found'));
+    }
+
+    const item = handle.dom.shift();
+    console.log(item.title);
+    console.log(item.link)
+}
+
+const tasks = [
+    checkForRSSFile,
+    readRSSFile,
+    downLoadRSSFeed,
+    parseRSSFeed
+]
 
 function next(err, result) {
     if (err) throw err;
 
+    const currentTask = tasks.shift();
+    if(currentTask) {
+        currentTask(result)
+    }
 }
+next();
 
-readRSSFile(configFileName)
