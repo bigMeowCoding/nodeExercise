@@ -44,7 +44,7 @@ function parseRSSFeed(rss) {
 
     const item = handle.dom.shift();
     console.log(item.title);
-    console.log(item.link)
+    console.log(item.link);
 }
 
 const tasks = [
