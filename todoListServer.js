@@ -1,6 +1,23 @@
-const http = require('http'), url = require('url');
+const http = require('http'), url = require('url'), qs = require('querystring');
 
 const items = [];
+
+function show(res) {
+    const html = '<html><head><title>todolist</title></head><body>' +
+        '<h1>Todo List</h1><ul>' +
+        items.map(function (item) {
+            return '<li>' + item + '</li>';
+        }).join()
+        +
+        '</ul><form method="post" action="/">' +
+        '<p><input type="text" name="item"/></p>' +
+        '<p><input type="submit" value="add item"/></p>' +
+        '</form></body></html>';
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Content-Length', Buffer.byteLength(html));
+    res.end(html);
+}
+
 http.createServer(function (req, res) {
     let item = '', index = null;
     const path = url.parse(req.url).pathname;
@@ -11,15 +28,13 @@ http.createServer(function (req, res) {
                 item += chunk;
             });
             req.on('end', function () {
-                items.push(item);
-                res.end('OK\n');
+                const obj = qs.parse(item);
+                items.push(obj.item);
+                show(res);
             });
             break;
         case 'GET':
-            items.forEach((item, i) => {
-                res.write(i + ' )' + item + '\n');
-            });
-            res.end();
+            show(res);
             break;
         case 'delete':
             index = parseInt(path.slice(1), 10);
@@ -30,7 +45,7 @@ http.createServer(function (req, res) {
                 res.statusCode = 404;
                 res.end('item not found');
             } else {
-                items.splice(index,1);
+                items.splice(index, 1);
                 res.end('OK\n');
             }
             break;
