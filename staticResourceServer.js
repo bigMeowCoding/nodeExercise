@@ -7,7 +7,7 @@ const root = __dirname;
 http.createServer(function (req, res) {
     const urlParsed = url.parse(req.url);
     const fileDirPath = path.join(root, urlParsed.pathname);
-    fs.stat(fileDirPath, function (error,status) {
+    fs.stat(fileDirPath, function (error) {
         if (error) {
             if (error.code === 'ENOENT') {
                 res.statusCode = 404;
