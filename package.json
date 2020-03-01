@@ -5,7 +5,9 @@
   "main": ".eslintrc.js",
   "dependencies": {
     "eslint": "^6.8.0",
+    "formidable": "^1.2.2",
     "htmlparser": "^1.7.7",
+    "iconv-lite": "^0.5.1",
     "jsonp": "^0.2.1",
     "request": "^2.88.2"
   },
