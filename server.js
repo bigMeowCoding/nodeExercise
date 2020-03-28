@@ -1,8 +1,8 @@
 const fs = require('fs'), path = require('path');
 
 const args = process.argv.splice(2);
-const file = path.join(process.cwd(), 'tasks.txt');
-const commad = args.shift();
+const file = path.join(process.cwd(), 'task.txt');
+const command = args.shift();
 const taskDescription = args.join(' ');
 
 function loadTaskArray(file, cb) {
@@ -43,7 +43,7 @@ function addTask(file, taskDescription) {
     });
 }
 
-switch (commad) {
+switch (command) {
     case 'list':
         listTasks(file);
         break;
