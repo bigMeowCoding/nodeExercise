@@ -1,8 +1,16 @@
-const http = require('http'), fs = require('fs');
+const connect = require('connect');
 
-http.createServer(
-    (req, res,) => {
-    }
-).listen(3000);
+const app = connect();
 
-console.log('serve open');
+function logger(req, res, next) {
+    console.log('%s %s', req.method, req.url);
+    next();
+}
+
+function hello(req, res) {
+    res.setHeader('content-type', 'text/plain');
+    res.end('hello world');
+}
+
+app.use(logger).use(hello).listen(3000);
+
