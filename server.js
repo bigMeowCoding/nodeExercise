@@ -1,5 +1,6 @@
 const connect = require('connect');
-
+const router = require('./router');
+const routes = require('./routes/user')
 const app = connect();
 
 function logger(req, res, next) {
@@ -43,5 +44,6 @@ function hello(req, res) {
     res.end('hello world');
 }
 
-app.use(logger).use('/admin', restrict).use('/admin', admin).use(hello).listen(3000);
+// app.use(logger).use('/admin', restrict).use('/admin', admin).use(hello).listen(3000);
 
+app.use(router(routes)).listen(3000);
