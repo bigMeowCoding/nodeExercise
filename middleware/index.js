@@ -1,6 +1,5 @@
 function logger(req, res, next) {
     // try{
-    f();
     console.log('%s %s', req.method, req.url);
     // next();
     // } catch (e) {
@@ -8,6 +7,31 @@ function logger(req, res, next) {
     // }
     // next();
 
+}
+
+function user(req, res, next) {
+    const users = ['jack', 'jay', 'tome'];
+    const match = req.url.match(/^\/user\/(.+)/);
+    if (match) {
+        if (users.includes(match[1])) {
+            res.end(match[1]);
+        } else {
+            const err = new Error('not found');
+            err.errorCode = 404;
+            next(err);
+        }
+    } else {
+        next();
+    }
+}
+
+function pets(req, res, next) {
+    const match = req.url.match(/^\/pets\/(.+)/);
+    if (match) {
+        foo();
+    } else {
+        next();
+    }
 }
 
 function restrict(req, res, next) {
@@ -41,9 +65,14 @@ function admin(req, res, next) {
     }
 }
 
-function hello(req, res) {
-    res.setHeader('content-type', 'text/plain');
-    res.end('hello world');
+function hello(req, res, next) {
+    if (req.url.match(/^\/hello/)) {
+        res.setHeader('content-type', 'text/plain');
+        res.end('hello world');
+    } else {
+        next();
+    }
+
 }
 
 function errorHandle() {
@@ -51,9 +80,14 @@ function errorHandle() {
     return function (error, req, res, next) {
         switch (env) {
             case 'dev':
-                res.end(JSON.stringify({
-                    error: error.message || '内部错误'
-                }));
+                if (error.errorCode === 404) {
+                    res.end(JSON.stringify({
+                        error: error.message || '内部错误'
+                    }));
+                } else {
+                    res.end('interval error');
+                }
+
                 break;
             default:
                 res.end('interval error');
@@ -65,5 +99,7 @@ module.exports = {
     hello,
     admin,
     logger, restrict,
-    errorHandle
+    errorHandle,
+    user,
+    pets
 };
