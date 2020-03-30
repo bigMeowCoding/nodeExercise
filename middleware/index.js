@@ -1,3 +1,4 @@
+const parse = require('url').parse
 function logger(req, res, next) {
     // try{
     console.log('%s %s', req.method, req.url);
@@ -67,7 +68,9 @@ function admin(req, res, next) {
 
 function hello(req, res, next) {
     if (req.url.match(/^\/hello/)) {
+        const url = parse(req.url);
         res.setHeader('content-type', 'text/plain');
+        res.setHeader('Set-Cookie', 'dd=df;Cache-control:maxAge=10');
         res.end('hello world');
     } else {
         next();
