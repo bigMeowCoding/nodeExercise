@@ -12,8 +12,8 @@ exports.form = function (req, res) {
     });
 };
 exports.list = function (req, res, next) {
-    Photo.find({}, function (err,images) {
-        if(err) {
+    Photo.find({}, function (err, images) {
+        if (err) {
             return next(err);
         }
         res.render('photo', {
@@ -21,6 +21,19 @@ exports.list = function (req, res, next) {
             images
         });
     });
+};
+
+exports.download = function (dir) {
+    return function (req, res, next) {
+        const id = req.params.id;
+        Photo.findById(id, function (err,photo) {
+            if(err) {
+                return next(err);
+            }
+            const path = join(dir, photo.path);
+            res.download(path);
+        });
+    };
 };
 
 exports.submit = function (photosDir) {

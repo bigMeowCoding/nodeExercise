@@ -22,11 +22,11 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/photo', photoRouter.list);
 app.get('/upload', photoRouter.form);
 app.post('/upload',upload.single('image'), photoRouter.submit(app.get('photos')));
+app.get('/photo/download/:id', photoRouter.download(app.get('photos')));
+app.use('/', photoRouter.list);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -43,5 +43,4 @@ app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error');
 });
-console.log(app)
 module.exports = app;
