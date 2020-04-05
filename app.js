@@ -3,9 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-var multer  = require('multer')
-var upload = multer({ dest:__dirname + '/public/images/temp/' })
-const indexRouter = require('./routes/index');
+const multer  = require('multer');
+const upload = multer({ dest:__dirname + '/public/images/temp/' });
 const usersRouter = require('./routes/users');
 const photoRouter = require('./routes/photo');
 const app = express();
@@ -43,4 +42,5 @@ app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 module.exports = app;
