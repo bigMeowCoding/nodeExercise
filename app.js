@@ -1,12 +1,15 @@
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session')
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const multer  = require('multer');
-const upload = multer({ dest:__dirname + '/public/images/temp/' });
+const bodyParser = require('body-parser');
 const usersRouter = require('./routes/users');
-const photoRouter = require('./routes/photo');
+const loginRoute = require('./routes/login');
+const registerRoute = require('./routes/register');
+const userMiddleWare = require('./lib/user');
+const message = require('./lib/message');
 const app = express();
 
 // view engine setup
@@ -17,16 +20,23 @@ app.set('photos', __dirname + '/public/images');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
-
+app.use(session({
+  secret: 'keyboard cat'
+}));
+app.use(message);
+app.use(userMiddleWare);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
-app.get('/upload', photoRouter.form);
-app.post('/upload',upload.single('image'), photoRouter.submit(app.get('photos')));
-app.get('/photo/download/:id', photoRouter.download(app.get('photos')));
-app.use('/', photoRouter.list);
-
+app.get('/login',loginRoute.form);
+app.post('/login', loginRoute.submit);
+app.get('/register',registerRoute.form);
+app.post('/register', registerRoute.submit);
+app.get('/success', (req,res) => {
+  res.render('success', { title: 'success' });
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

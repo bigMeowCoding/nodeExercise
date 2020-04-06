@@ -59,6 +59,53 @@ class User {
         });
     }
 
+    static getByName(name, fn) {
+        this.getId(name,  (err, id) =>{
+            if (err) {
+                return fn(err);
+            }
+            if (id) {
+                this.get(id, fn);
+            } else {
+                fn(null, null);
+            }
+        });
+    }
+
+    static getId(name, fn) {
+        db.get('user:id:' + name, fn);
+    }
+
+    static get(id, fn) {
+        db.hgetall('user:' + id, function (err, user) {
+            if (err) {
+                return fn(err);
+            }
+            fn(null, new User(user));
+        });
+    }
+
+    static authenticate(name, pass, fn) {
+        User.getByName(name, (error, user) => {
+            if (error) {
+                return fn(error);
+            }
+            if (!user.id) {
+                return fn();
+            }
+            bcrypt.hash(pass, user.salt, function (err, hash) {
+                if (err) {
+                    return fn(err);
+                }
+                if (hash === user.pass) {
+                    return fn(null, user);
+                }
+                fn();
+            });
+        });
+    }
+
+
 }
 
 
