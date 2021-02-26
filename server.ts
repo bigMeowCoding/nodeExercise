@@ -70,6 +70,33 @@ app.post("/api/load-more", (req, res) => {
     }),
   });
 });
+app.post("/report/link/offerTsoTicket", (req, res) => {
+  res.send({
+    errcode: "0",
+    errmsg: "处理成功",
+    globalTicket: "",
+    monitorTrackId: "",
+    data: [
+    ],
+  });
+
+});
+
+app.post("/report/link/findTsoTicket", (req, res) => {
+  res.send({
+    errcode: "0",
+    errmsg: "处理成功",
+    globalTicket: "",
+    monitorTrackId: "",
+    data:{
+      pid:1,
+      wid:22,
+      tsoTicketTag:1,
+      tsoTicket:1_1_1_1_1
+    },
+  });
+
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
