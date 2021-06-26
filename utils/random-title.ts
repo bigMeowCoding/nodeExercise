@@ -73,11 +73,6 @@ export const addMonthsToYear = (year, monthsToAdd) => {
   }
   return { year: y, month: m + 1 };
 };
-export function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-}
 export const addMonthsToYearAsDate = (year, monthsToAdd) => {
   const r = addMonthsToYear(year, monthsToAdd);
   return new Date(`${r.year}-${r.month}`);
