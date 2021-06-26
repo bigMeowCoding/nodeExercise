@@ -3,7 +3,7 @@ import { makePrizeList } from "./utils/prize";
 const cors = require("cors");
 const app = express();
 const port = 9103;
-import Home from "./components/home";
+import Home from "./src/components/home";
 import { renderToString } from "react-dom/server";
 const content = renderToString(<Home />);
 
