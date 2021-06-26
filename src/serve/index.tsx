@@ -3,21 +3,28 @@ import cors from "cors";
 const app = express();
 const port = 9103;
 import { renderToString } from "react-dom/server";
-import Home from "./components/home";
 import React from "react";
-const content = renderToString(<Home />);
+import Routes from "../routes";
+import { StaticRouter } from "react-router-dom";
 
 app.use(cors());
 app.use(express.json()); // to support JSON-encoded bodies
-app.get("/server", (req, res) => {
+app.use(express.static("public"));
+app.get("*", (req, res) => {
+  const content = renderToString(
+    <StaticRouter location={req.path} context={{}}>
+      {Routes}
+    </StaticRouter>
+  );
   res.send(
     `
     <html lang="es">
-      <head> 
+      <head>
         <title>ssr</title>
       </head>
       <body>
         <div id="root">${content}</div>
+        <script src="./index.js"></script>
       </body>
     </html>
    `

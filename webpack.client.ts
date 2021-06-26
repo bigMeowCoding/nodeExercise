@@ -1,14 +1,12 @@
 import * as Path from "path";
 import nodeExternals from "webpack-node-externals";
 module.exports = {
-  target: "node",
   mode: "development",
-  entry: "./src/serve/index",
+  entry: "./src/client/index",
   output: {
-    filename: "bundle.js",
-    path: Path.resolve(__dirname, "build"),
+    filename: "index.js",
+    path: Path.resolve(__dirname, "public"),
   },
-  externals: [nodeExternals()],
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
