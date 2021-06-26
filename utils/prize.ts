@@ -4,7 +4,7 @@ import dayjs = require("dayjs");
 
 export function makePrizeList(count: number) {
   return Array.from(new Array(count)).map((item, index) => {
-    return makePrize({ title: "奖品" + index });
+    return makePrize();
   });
 }
 
@@ -69,7 +69,7 @@ export function isMemberPrize(prizeType: PrizeType): boolean {
     type === PrizeType.MEMBER_GROW_POINT
   );
 }
-export function makePrize({ title }) {
+export function makePrize() {
   const type = randomPrizeType();
   const winEnd = dayjs().add(getRandomInt(1, 10), "day");
   return {

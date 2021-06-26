@@ -3,7 +3,7 @@
 import { MONTHS_PER_YEAR } from "./config";
 
 export const fill = (n) => {
-  const arr = [];
+  const arr: any[] = [];
   for (let i = 0; i < n; i += 1) {
     arr.push(i);
   }

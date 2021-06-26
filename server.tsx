@@ -3,9 +3,39 @@ import { makePrizeList } from "./utils/prize";
 const cors = require("cors");
 const app = express();
 const port = 9103;
+import Home from "./components/home";
+import { renderToString } from "react-dom/server";
+const content = renderToString(<Home />);
 
 app.use(cors());
 app.use(express.json()); // to support JSON-encoded bodies
+app.post("/mock/getForm", (req, res) => {
+  res.send({
+    code: {
+      errcode: "0",
+    },
+    errcode: "0",
+    errmsg: "处理成功",
+    globalTicket: "",
+    monitorTrackId: "",
+    data: [0, 1, 2, 4, 5, 3, 8],
+  });
+});
+app.get("/server", (req, res) => {
+  res.send(
+    `
+    <html>
+      <head> 
+        <title>ssr</title>
+      </head>
+      <body>
+        <div id="root">${content}</div>
+      </body>
+    </html>
+   `
+  );
+});
+
 app.post("/mock/getForm", (req, res) => {
   res.send({
     code: {
@@ -374,7 +404,6 @@ app.post("/mock/creditExchange", (req, res) => {
     data: true,
   });
 });
-
 app.post("/mock/getComponentById", (req, res) => {
   res.send({
     code: {
@@ -463,7 +492,6 @@ app.get("/mock/test", (req, res) => {
     data: true,
   });
 });
-
 app.post("/mock/getActivityMaterial", (req, res) => {
   res.send({
     code: {

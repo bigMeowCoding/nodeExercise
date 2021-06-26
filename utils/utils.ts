@@ -8,8 +8,8 @@ import {
 } from "./config";
 import { daysInMonth, randomTitle } from "./random-title";
 
-export const fill = (n) => {
-  const arr = [];
+export const fill = (n: number) => {
+  const arr: number[] = [];
   for (let i = 0; i < n; i += 1) {
     arr.push(i);
   }
@@ -64,7 +64,7 @@ export const buildElement = ({ trackId, start, end, i }) => {
   };
 };
 export const buildDaysElements = (trackId) => {
-  const v = [];
+  const v: any[] = [];
   let i = 1;
   let month = Math.random() < 0.5 ? 1 : 2;
 
@@ -90,7 +90,6 @@ export const buildDaysElements = (trackId) => {
   );
   // const gap = buildElementGap();
   // month += monthSpan + gap;
-  i += 1;
   // }
 
   return v;
